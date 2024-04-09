@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arithmetic Calculator</title>
+</head>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@500&display=swap" rel="stylesheet">
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Exo 2', sans-serif;
+    }
+
+    body {
+        height: 100vh;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.6) 0%, rgba(255, 194, 206, 0.6) 150%), url("4853433.jpg");
+        background-size: cover;
+        background-position: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+    }
+
+    .main {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+    }
+
+    .top {
+        margin-bottom: 6%;
+    }
+
+
+
+    .top h1 {
+        font-size: 30px;
+        font-family: 'Exo 2';
+        text-align: center;
+    }
+
+    .calcu {
+        font-size: 40px;
+        text-align: center;
+        font-weight: 600;
+        color: red;
+        letter-spacing: 2px;
+    }
+
+    .bottom {}
+
+    .credits {
+        margin-top: 5%;
+        opacity: 0.3;
+        font-family: poppins;
+        text-align: center;
+    }
+
+    .container {
+        position: relative;
+        max-width: 400px;
+        max-height: fit-content;
+        width: 100%;
+        padding: 10px 20px 20px;
+        border-radius: 15px;
+        background-color: rgb(255, 255, 255);
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+    }
+
+    .display {
+        height: 80px;
+        width: 100%;
+        margin-bottom: 20px;
+        margin-top: 15px;
+        font-size: 25px;
+        font-weight: 600;
+        outline: none;
+        border: none;
+        color: rgb(35, 35, 35);
+        pointer-events: none;
+        padding: 10px;
+        background-color: rgb(240, 240, 240);
+        border-radius: 25px;
+    }
+
+    .buttons {
+        display: grid;
+        grid-gap: 5px;
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .buttons button {
+        padding: 10px;
+        border-radius: 6px;
+        border: none;
+        outline: none;
+        font-size: 20px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: 0.2s all linear;
+    }
+
+    .buttons button:hover {
+        background-color: rgb(209, 209, 209);
+    }
+
+    .buttons button:active {
+        transform: scale(1.05);
+        background-color: bisque
+    }
+
+    .operator {
+        color: rgb(80, 80, 191);
+    }
+</style>
+
+<body>
+    <div class="main">
+        <div class="top">
+            <h1>Basic Arithmetic</h1>
+            <h1></h1>
+            <span class="calcu">
+                <p>CALCULATOR</p>
+            </span>
+        </div>
+        <div class="bottom">
+            <div class="container">
+                <input type="text" class="display">
+
+                <div class="buttons">
+                    <button data-value="AC" class="operator">AC</button>
+                    <button data-value="DEL" class="operator">DEL</button>
+                    <button data-value="%" class="operator">%</button>
+                    <button data-value="/" class="operator">/</button>
+
+                    <button data-value="7">7</button>
+                    <button data-value="8">8</button>
+                    <button data-value="9">9</button>
+                    <button data-value="*" class="operator">*</button>
+
+                    <button data-value="4">4</button>
+                    <button data-value="5">5</button>
+                    <button data-value="6">6</button>
+                    <button data-value="-" class="operator">-</button>
+
+                    <button data-value="1">1</button>
+                    <button data-value="2">2</button>
+                    <button data-value="3">3</button>
+                    <button data-value="+" class="operator">+</button>
+
+                    <button data-value="0">0</button>
+                    <button data-value="00">00</button>
+                    <button data-value="." class="dot">.</button>
+                    <button data-value="=" class="operator">=</button>
+                </div>
+            </div>
+        </div>
+        <p class="credits">&#169; DESIGNED BY ROSHAN</p>
+    </div>
+    <script>
+        const display = document.querySelector(".display");
+        const buttons = document.querySelectorAll("button");
+        const specialChars = ["%", "*", "/", "-", "+", "="];
+        let output = "";
+
+        //Define function to calculate based on button clicked.
+        const calculate = (btnValue) => {
+            display.focus();
+            if (btnValue === "=" && output !== "") {
+                //If output has '%', replace with '/100' before evaluating.
+                output = eval(output.replace("%", "/100"));
+            } else if (btnValue === "AC") {
+                output = "";
+            } else if (btnValue === "DEL") {
+                //If DEL button is clicked, remove the last character from the output.
+                output = output.toString().slice(0, -1);
+            } else {
+                //If output is empty and button is specialChars then return
+                if (output === "" && specialChars.includes(btnValue)) return;
+                output += btnValue;
+            }
+            display.value = output;
+        };
+
+        //Add event listener to buttons, call calculate() on click.
+        buttons.forEach((button) => {
+            //Button click listener calls calculate() with dataset value as argument.
+            button.addEventListener("click", (e) => calculate(e.target.dataset.value));
+        });
+    </script>
+</body>
+
+</html>
